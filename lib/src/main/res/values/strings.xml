@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <string name="imoya_log_level" translatable="false" tools:override="true">i</string>
+
+    <string name="time_format">#HOUR#:#MINUTE# #AMPM#</string>
+    <string name="time_format_24" translatable="false">#HOUR#:#MINUTE#</string>
+    <string name="time_am">a.m.</string>
+    <string name="time_pm">p.m.</string>
+</resources>
