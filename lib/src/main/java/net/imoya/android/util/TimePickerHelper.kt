@@ -5,67 +5,62 @@ import android.widget.TimePicker
 import androidx.annotation.RequiresApi
 
 /**
- * [TimePicker] 関連ユーティリティ
+ * [TimePicker] helper
+ *
+ * Accesses value that Android API level dependent
  */
 @Suppress("unused")
-object TimePickerUtil {
-    @JvmStatic
-    fun getHour(timePicker: TimePicker): Int {
+class TimePickerHelper(private val timePicker: TimePicker) {
+    fun getHour(): Int {
         return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M)
-            getHourM(timePicker)
+            getHourM()
         else
-            getHourLegacy(timePicker)
+            getHourLegacy()
     }
 
     @RequiresApi(Build.VERSION_CODES.M)
-    fun getHourM(timePicker: TimePicker): Int {
+    fun getHourM(): Int {
         return timePicker.hour
     }
 
     @Suppress("deprecation")
-    @JvmStatic
-    fun getHourLegacy(timePicker: TimePicker): Int {
+    fun getHourLegacy(): Int {
         return timePicker.currentHour
     }
 
-    @JvmStatic
-    fun getMinute(timePicker: TimePicker): Int {
+    fun getMinute(): Int {
         return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M)
-            getMinuteM(timePicker)
+            getMinuteM()
         else
-            getMinuteLegacy(timePicker)
+            getMinuteLegacy()
     }
 
     @RequiresApi(Build.VERSION_CODES.M)
-    fun getMinuteM(timePicker: TimePicker): Int {
+    fun getMinuteM(): Int {
         return timePicker.minute
     }
 
     @Suppress("deprecation")
-    @JvmStatic
-    fun getMinuteLegacy(timePicker: TimePicker): Int {
+    fun getMinuteLegacy(): Int {
         return timePicker.currentMinute
     }
 
-    @JvmStatic
-    fun setHourAndMinute(timePicker: TimePicker, hour: Int, minute: Int) {
+    fun setHourAndMinute(hour: Int, minute: Int) {
         return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            setHourAndMinuteM(timePicker, hour, minute)
+            setHourAndMinuteM(hour, minute)
         } else {
-            setHourAndMinuteLegacy(timePicker, hour, minute)
+            setHourAndMinuteLegacy(hour, minute)
         }
     }
 
     @RequiresApi(Build.VERSION_CODES.M)
-    @JvmStatic
-    fun setHourAndMinuteM(timePicker: TimePicker, hour: Int, minute: Int) {
+    fun setHourAndMinuteM(hour: Int, minute: Int) {
         timePicker.hour = hour
         timePicker.minute = minute
     }
 
     @Suppress("deprecation")
-    @JvmStatic
-    fun setHourAndMinuteLegacy(timePicker: TimePicker, hour: Int, minute: Int) {
+    fun setHourAndMinuteLegacy(hour: Int, minute: Int) {
         timePicker.currentHour = hour
         timePicker.currentMinute = minute
     }
