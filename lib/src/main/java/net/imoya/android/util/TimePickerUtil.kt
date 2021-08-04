@@ -6,8 +6,15 @@ import androidx.annotation.RequiresApi
 
 /**
  * [TimePicker] 関連ユーティリティ
+ *
+ * TimeUtil is deprecated. Use [TimePickerHelper] instead.
  */
 @Suppress("unused")
+@Deprecated(
+    "TimeUtil is deprecated. Use TimePickerHelper instead.",
+    ReplaceWith("TimePickerHelper", "net.imoya.android.util"),
+    DeprecationLevel.WARNING
+)
 object TimePickerUtil {
     @JvmStatic
     fun getHour(timePicker: TimePicker): Int {
