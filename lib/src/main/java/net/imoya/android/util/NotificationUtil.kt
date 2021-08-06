@@ -1,6 +1,5 @@
 package net.imoya.android.util
 
-import android.annotation.TargetApi
 import android.app.Notification
 import android.app.NotificationChannel
 import android.app.NotificationManager
@@ -29,11 +28,17 @@ object NotificationUtil {
      */
     @RequiresApi(Build.VERSION_CODES.O)
     @JvmStatic
-    fun createChannel(context: Context, channelId: String, name: String, description: String, importance: Int) {
-        val mChannel = NotificationChannel(channelId, name, importance)
-        mChannel.description = description
-        val notificationManager = context.getSystemService(NOTIFICATION_SERVICE) as NotificationManager
-        notificationManager.createNotificationChannel(mChannel)
+    fun createChannel(
+        context: Context,
+        channelId: String,
+        name: String,
+        description: String,
+        importance: Int
+    ) {
+        val channel = NotificationChannel(channelId, name, importance)
+        channel.description = description
+        val manager = context.getSystemService(NOTIFICATION_SERVICE) as NotificationManager
+        manager.createNotificationChannel(channel)
     }
 
     /**
@@ -50,14 +55,15 @@ object NotificationUtil {
      */
     @JvmStatic
     fun makeNotification(
-            context: Context, channelId: String, iconResourceId: Int, time: Long,
-            title: String, text: String, contentIntent: PendingIntent): Notification {
+        context: Context, channelId: String, iconResourceId: Int, time: Long,
+        title: String, text: String, contentIntent: PendingIntent
+    ): Notification {
         return NotificationCompat.Builder(context, channelId)
-                .setSmallIcon(iconResourceId)
-                .setWhen(time)
-                .setContentTitle(title)
-                .setContentText(text)
-                .setContentIntent(contentIntent)
-                .build()
+            .setSmallIcon(iconResourceId)
+            .setWhen(time)
+            .setContentTitle(title)
+            .setContentText(text)
+            .setContentIntent(contentIntent)
+            .build()
     }
 }
