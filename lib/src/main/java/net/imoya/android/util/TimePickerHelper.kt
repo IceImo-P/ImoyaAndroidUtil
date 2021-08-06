@@ -11,6 +11,12 @@ import androidx.annotation.RequiresApi
  */
 @Suppress("unused")
 class TimePickerHelper(private val timePicker: TimePicker) {
+    /**
+     * Call [TimePicker.getHour] or its legacy API
+     *
+     * @return the currently selected hour, in the range (0-23)
+     * @see [TimePicker.getHour]
+     */
     fun getHour(): Int {
         return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M)
             getHourM()
@@ -28,6 +34,12 @@ class TimePickerHelper(private val timePicker: TimePicker) {
         return timePicker.currentHour
     }
 
+    /**
+     * Call [TimePicker.getMinute] or its legacy API
+     *
+     * @return the currently selected minute, in the range (0-59)
+     * @see [TimePicker.getMinute]
+     */
     fun getMinute(): Int {
         return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M)
             getMinuteM()
@@ -45,6 +57,12 @@ class TimePickerHelper(private val timePicker: TimePicker) {
         return timePicker.currentMinute
     }
 
+    /**
+     * Call [TimePicker.setHour], [TimePicker.setMinute] or its legacy API
+     *
+     * @param hour the hour to set, in the range (0-23)
+     * @param minute the minute to set, in the range (0-59)
+     */
     fun setHourAndMinute(hour: Int, minute: Int) {
         return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             setHourAndMinuteM(hour, minute)

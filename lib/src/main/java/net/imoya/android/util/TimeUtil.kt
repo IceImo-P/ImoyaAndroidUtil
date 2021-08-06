@@ -1,7 +1,6 @@
 package net.imoya.android.util
 
 import android.content.Context
-import net.imoya.android.util.R
 import java.util.*
 
 /**
