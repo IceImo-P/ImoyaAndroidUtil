@@ -29,10 +29,36 @@ object ViewUtil {
     fun setDeepEnabled(view: View?, enabled: Boolean) {
         view?.isEnabled = enabled
         if (view is ViewGroup) {
-            val count = view.childCount
-            for (i in 0 until count) {
-                val child = view.getChildAt(i)
-                setDeepEnabled(child, enabled)
+            setEnabledDescendants(view, enabled)
+        }
+    }
+
+    /**
+     * Set [View.setEnabled] to all descendant
+     *
+     * @param viewGroup [ViewGroup]
+     * @param enabled value for set [View.setEnabled]
+     */
+    @JvmStatic
+    fun setEnabledDescendants(viewGroup: ViewGroup, enabled: Boolean) {
+        val list: ArrayList<View> = ArrayList()
+        for (i in 0 until viewGroup.childCount) {
+            setEnabledDescendantsInternal(viewGroup.getChildAt(i), enabled, list)
+        }
+    }
+
+    private fun setEnabledDescendantsInternal(
+        view: View?,
+        enabled: Boolean,
+        list: ArrayList<View>
+    ) {
+        if (view != null && !list.any { v -> v === view }) {
+            view.isEnabled = enabled
+            list.add(view)
+            if (view is ViewGroup) {
+                for (i in 0 until view.childCount) {
+                    setEnabledDescendantsInternal(view.getChildAt(i), enabled, list)
+                }
             }
         }
     }
