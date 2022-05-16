@@ -82,8 +82,18 @@ object Log {
     }
 
     @JvmStatic
+    fun v(tag: String?, msgCallback: () -> String) {
+        if (shouldOutput(Level.VERBOSE)) Log.v(tag, msgCallback())
+    }
+
+    @JvmStatic
     fun v(tag: String?, msg: String?, tr: Throwable?) {
         if (shouldOutput(Level.VERBOSE)) Log.v(tag, msg, tr)
+    }
+
+    @JvmStatic
+    fun v(tag: String?, msgCallback: () -> String, tr: Throwable?) {
+        if (shouldOutput(Level.VERBOSE)) Log.v(tag, msgCallback(), tr)
     }
 
     @JvmStatic
@@ -97,8 +107,18 @@ object Log {
     }
 
     @JvmStatic
+    fun d(tag: String?, msgCallback: () -> String) {
+        if (shouldOutput(Level.DEBUG)) Log.d(tag, msgCallback())
+    }
+
+    @JvmStatic
     fun d(tag: String?, msg: String?, tr: Throwable?) {
         if (shouldOutput(Level.DEBUG)) Log.d(tag, msg, tr)
+    }
+
+    @JvmStatic
+    fun d(tag: String?, msgCallback: () -> String, tr: Throwable?) {
+        if (shouldOutput(Level.DEBUG)) Log.d(tag, msgCallback(), tr)
     }
 
     @JvmStatic
@@ -112,8 +132,18 @@ object Log {
     }
 
     @JvmStatic
+    fun i(tag: String?, msgCallback: () -> String) {
+        if (shouldOutput(Level.INFO)) Log.i(tag, msgCallback())
+    }
+
+    @JvmStatic
     fun i(tag: String?, msg: String?, tr: Throwable?) {
         if (shouldOutput(Level.INFO)) Log.i(tag, msg, tr)
+    }
+
+    @JvmStatic
+    fun i(tag: String?, msgCallback: () -> String, tr: Throwable?) {
+        if (shouldOutput(Level.INFO)) Log.i(tag, msgCallback(), tr)
     }
 
     @JvmStatic
@@ -127,8 +157,18 @@ object Log {
     }
 
     @JvmStatic
+    fun w(tag: String?, msgCallback: () -> String) {
+        if (shouldOutput(Level.WARN)) Log.w(tag, msgCallback())
+    }
+
+    @JvmStatic
     fun w(tag: String?, msg: String?, tr: Throwable?) {
         if (shouldOutput(Level.WARN)) Log.w(tag, msg, tr)
+    }
+
+    @JvmStatic
+    fun w(tag: String?, msgCallback: () -> String, tr: Throwable?) {
+        if (shouldOutput(Level.WARN)) Log.w(tag, msgCallback(), tr)
     }
 
     @JvmStatic
@@ -142,8 +182,18 @@ object Log {
     }
 
     @JvmStatic
+    fun e(tag: String?, msgCallback: () -> String) {
+        if (shouldOutput(Level.ERROR)) Log.e(tag, msgCallback())
+    }
+
+    @JvmStatic
     fun e(tag: String?, msg: String?, tr: Throwable?) {
         if (shouldOutput(Level.ERROR)) Log.e(tag, msg, tr)
+    }
+
+    @JvmStatic
+    fun e(tag: String?, msgCallback: () -> String, tr: Throwable?) {
+        if (shouldOutput(Level.ERROR)) Log.e(tag, msgCallback(), tr)
     }
 
     @JvmStatic
@@ -157,8 +207,18 @@ object Log {
     }
 
     @JvmStatic
+    fun wtf(tag: String?, msgCallback: () -> String) {
+        if (shouldOutput(Level.WTF)) Log.wtf(tag, msgCallback())
+    }
+
+    @JvmStatic
     fun wtf(tag: String?, msg: String?, tr: Throwable?) {
         if (shouldOutput(Level.WTF)) Log.wtf(tag, msg, tr)
+    }
+
+    @JvmStatic
+    fun wtf(tag: String?, msgCallback: () -> String, tr: Throwable?) {
+        if (shouldOutput(Level.WTF)) Log.wtf(tag, msgCallback(), tr)
     }
 
     @JvmStatic
