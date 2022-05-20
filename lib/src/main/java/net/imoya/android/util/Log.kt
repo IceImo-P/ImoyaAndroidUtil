@@ -1,10 +1,10 @@
 package net.imoya.android.util
 
 import android.content.Context
-import android.util.Log
-import java.util.Calendar
-import java.util.Locale
-import java.util.TimeZone
+import net.imoya.android.log.LogLevel
+import net.imoya.android.log.LogUtil
+import net.imoya.android.log.LogWrapper
+import java.util.*
 
 /**
  * Log
@@ -13,15 +13,7 @@ import java.util.TimeZone
  */
 @Suppress("unused")
 object Log {
-    /**
-     * Output log level
-     */
-    private var logLevel = Level.INFO
-
-    @JvmStatic
-    internal fun shouldOutput(request: Level): Boolean {
-        return Level.shouldOutput(logLevel, request)
-    }
+    private var logWrapper = LogWrapper(LogLevel.INFO)
 
     /**
      * Initialize log output
@@ -30,7 +22,7 @@ object Log {
      */
     @JvmStatic
     fun init(context: Context) {
-        logLevel = Level.from(context.getString(R.string.imoya_log_level))
+        logWrapper = LogWrapper(LogLevel.from(context.getString(R.string.imoya_log_level)))
     }
 
     /**
@@ -39,11 +31,16 @@ object Log {
      * @param time RTC datetime
      * @return String for log
      */
+    @Deprecated(
+        level = DeprecationLevel.WARNING,
+        message = "Use net.imoya.android.log.LogUtil#dateTimeString(Long) at ImoyaAndroidLogLib.",
+        replaceWith = ReplaceWith(
+            "LogUtil.dateTimeString(time)", "net.imoya.android.log.LogUtil"
+        )
+    )
     @JvmStatic
     fun getDateTimeString(time: Long): String {
-        val calendar = Calendar.getInstance(TimeZone.getDefault(), Locale.US)
-        calendar.timeInMillis = time
-        return getString(calendar)
+        return LogUtil.dateTimeString(time)
     }
 
     /**
@@ -51,193 +48,200 @@ object Log {
      *
      * @param calendar
      */
+    @Deprecated(
+        level = DeprecationLevel.WARNING,
+        message = "Use net.imoya.android.log.LogUtil#logString(Calendar) at ImoyaAndroidLogLib.",
+        replaceWith = ReplaceWith(
+            "LogUtil.logString(calendar)", "net.imoya.android.log.LogUtil"
+        )
+    )
     @JvmStatic
     fun getString(calendar: Calendar): String {
-        return calendar[Calendar.YEAR].toString() + "/" + String.format(
-            Locale.US,
-            "%02d",
-            calendar[Calendar.MONTH] + 1
-        ) + "/" + String.format(
-            Locale.US,
-            "%02d",
-            calendar[Calendar.DAY_OF_MONTH]
-        ) + " " + String.format(
-            Locale.US,
-            "%02d",
-            calendar[Calendar.HOUR_OF_DAY]
-        ) + ":" + String.format(
-            Locale.US,
-            "%02d",
-            calendar[Calendar.MINUTE]
-        ) + ":" + String.format(
-            Locale.US,
-            "%02d",
-            calendar[Calendar.SECOND]
-        )
+        return LogUtil.logString(calendar)
     }
 
     @JvmStatic
     fun v(tag: String?, msg: String) {
-        if (shouldOutput(Level.VERBOSE)) Log.v(tag, msg)
+        logWrapper.v(tag, msg)
     }
 
     @JvmStatic
     fun v(tag: String?, msgCallback: () -> String) {
-        if (shouldOutput(Level.VERBOSE)) Log.v(tag, msgCallback())
+        logWrapper.v(tag, msgCallback)
     }
 
     @JvmStatic
     fun v(tag: String?, msg: String?, tr: Throwable?) {
-        if (shouldOutput(Level.VERBOSE)) Log.v(tag, msg, tr)
+        logWrapper.v(tag, msg, tr)
     }
 
     @JvmStatic
     fun v(tag: String?, msgCallback: () -> String, tr: Throwable?) {
-        if (shouldOutput(Level.VERBOSE)) Log.v(tag, msgCallback(), tr)
+        logWrapper.v(tag, msgCallback, tr)
     }
 
     @JvmStatic
     fun v(tag: String?, tr: Throwable) {
-        if (shouldOutput(Level.VERBOSE)) Log.v(tag, tr.toString(), tr)
+        logWrapper.v(tag, tr)
     }
 
     @JvmStatic
     fun d(tag: String?, msg: String) {
-        if (shouldOutput(Level.DEBUG)) Log.d(tag, msg)
+        logWrapper.d(tag, msg)
     }
 
     @JvmStatic
     fun d(tag: String?, msgCallback: () -> String) {
-        if (shouldOutput(Level.DEBUG)) Log.d(tag, msgCallback())
+        logWrapper.d(tag, msgCallback)
     }
 
     @JvmStatic
     fun d(tag: String?, msg: String?, tr: Throwable?) {
-        if (shouldOutput(Level.DEBUG)) Log.d(tag, msg, tr)
+        logWrapper.d(tag, msg, tr)
     }
 
     @JvmStatic
     fun d(tag: String?, msgCallback: () -> String, tr: Throwable?) {
-        if (shouldOutput(Level.DEBUG)) Log.d(tag, msgCallback(), tr)
+        logWrapper.d(tag, msgCallback, tr)
     }
 
     @JvmStatic
     fun d(tag: String?, tr: Throwable) {
-        if (shouldOutput(Level.DEBUG)) Log.d(tag, tr.toString(), tr)
+        logWrapper.d(tag, tr)
     }
 
     @JvmStatic
     fun i(tag: String?, msg: String?) {
-        if (shouldOutput(Level.INFO)) Log.i(tag, msg!!)
+        logWrapper.i(tag, msg)
     }
 
     @JvmStatic
     fun i(tag: String?, msgCallback: () -> String) {
-        if (shouldOutput(Level.INFO)) Log.i(tag, msgCallback())
+        logWrapper.i(tag, msgCallback)
     }
 
     @JvmStatic
     fun i(tag: String?, msg: String?, tr: Throwable?) {
-        if (shouldOutput(Level.INFO)) Log.i(tag, msg, tr)
+        logWrapper.i(tag, msg, tr)
     }
 
     @JvmStatic
     fun i(tag: String?, msgCallback: () -> String, tr: Throwable?) {
-        if (shouldOutput(Level.INFO)) Log.i(tag, msgCallback(), tr)
+        logWrapper.i(tag, msgCallback, tr)
     }
 
     @JvmStatic
     fun i(tag: String?, tr: Throwable) {
-        if (shouldOutput(Level.INFO)) Log.i(tag, tr.toString(), tr)
+        logWrapper.i(tag, tr)
     }
 
     @JvmStatic
     fun w(tag: String?, msg: String) {
-        if (shouldOutput(Level.WARN)) Log.w(tag, msg)
+        logWrapper.w(tag, msg)
     }
 
     @JvmStatic
     fun w(tag: String?, msgCallback: () -> String) {
-        if (shouldOutput(Level.WARN)) Log.w(tag, msgCallback())
+        logWrapper.w(tag, msgCallback)
     }
 
     @JvmStatic
     fun w(tag: String?, msg: String?, tr: Throwable?) {
-        if (shouldOutput(Level.WARN)) Log.w(tag, msg, tr)
+        logWrapper.w(tag, msg, tr)
     }
 
     @JvmStatic
     fun w(tag: String?, msgCallback: () -> String, tr: Throwable?) {
-        if (shouldOutput(Level.WARN)) Log.w(tag, msgCallback(), tr)
+        logWrapper.w(tag, msgCallback, tr)
     }
 
     @JvmStatic
     fun w(tag: String?, tr: Throwable?) {
-        if (shouldOutput(Level.WARN)) Log.w(tag, tr)
+        logWrapper.w(tag, tr)
     }
 
     @JvmStatic
     fun e(tag: String?, msg: String) {
-        if (shouldOutput(Level.ERROR)) Log.e(tag, msg)
+        logWrapper.e(tag, msg)
     }
 
     @JvmStatic
     fun e(tag: String?, msgCallback: () -> String) {
-        if (shouldOutput(Level.ERROR)) Log.e(tag, msgCallback())
+        logWrapper.e(tag, msgCallback)
     }
 
     @JvmStatic
     fun e(tag: String?, msg: String?, tr: Throwable?) {
-        if (shouldOutput(Level.ERROR)) Log.e(tag, msg, tr)
+        logWrapper.e(tag, msg, tr)
     }
 
     @JvmStatic
     fun e(tag: String?, msgCallback: () -> String, tr: Throwable?) {
-        if (shouldOutput(Level.ERROR)) Log.e(tag, msgCallback(), tr)
+        logWrapper.e(tag, msgCallback, tr)
     }
 
     @JvmStatic
     fun e(tag: String?, tr: Throwable) {
-        if (shouldOutput(Level.ERROR)) Log.e(tag, tr.toString(), tr)
+        logWrapper.e(tag, tr)
     }
 
     @JvmStatic
     fun wtf(tag: String?, msg: String?) {
-        if (shouldOutput(Level.WTF)) Log.wtf(tag, msg)
+        logWrapper.wtf(tag, msg)
     }
 
     @JvmStatic
     fun wtf(tag: String?, msgCallback: () -> String) {
-        if (shouldOutput(Level.WTF)) Log.wtf(tag, msgCallback())
+        logWrapper.wtf(tag, msgCallback)
     }
 
     @JvmStatic
     fun wtf(tag: String?, msg: String?, tr: Throwable?) {
-        if (shouldOutput(Level.WTF)) Log.wtf(tag, msg, tr)
+        logWrapper.wtf(tag, msg, tr)
     }
 
     @JvmStatic
     fun wtf(tag: String?, msgCallback: () -> String, tr: Throwable?) {
-        if (shouldOutput(Level.WTF)) Log.wtf(tag, msgCallback(), tr)
+        logWrapper.wtf(tag, msgCallback, tr)
     }
 
     @JvmStatic
     fun wtf(tag: String?, tr: Throwable) {
-        if (shouldOutput(Level.WTF)) Log.wtf(tag, tr)
+        logWrapper.wtf(tag, tr)
     }
 
+    @Deprecated(
+        level = DeprecationLevel.WARNING,
+        message = "Use net.imoya.android.log.LogUtil#stackTraceString(Throwable) at ImoyaAndroidLogLib.",
+        replaceWith = ReplaceWith(
+            "if (tr != null) LogUtil.stackTraceString(tr) else \"\"",
+            "net.imoya.android.log.LogUtil"
+        )
+    )
     @JvmStatic
     fun getStackTraceString(tr: Throwable?): String {
-        return Log.getStackTraceString(tr)
+        return if (tr != null) LogUtil.stackTraceString(tr) else ""
     }
 
     /**
      * Log level
      */
+    @Deprecated(
+        level = DeprecationLevel.WARNING,
+        message = "Use net.imoya.android.log.LogLevel at ImoyaAndroidLogLib."
+    )
+    @Suppress("deprecation")
     enum class Level(private val level: Int) {
         NONE(Int.MAX_VALUE), VERBOSE(0), DEBUG(1), INFO(2), WARN(3), ERROR(4), WTF(5);
 
         companion object {
+            @Deprecated(
+                level = DeprecationLevel.WARNING,
+                message = "Use net.imoya.android.log.LogLevel.from(String) at ImoyaAndroidLogLib.",
+                replaceWith = ReplaceWith(
+                    "LogLevel.from(s)", "net.imoya.android.log.LogLevel"
+                )
+            )
             @JvmStatic
             fun from(s: String?): Level {
                 return when (s) {
@@ -251,6 +255,13 @@ object Log {
                 }
             }
 
+            @Deprecated(
+                level = DeprecationLevel.WARNING,
+                message = "Use net.imoya.android.log.LogLevel.shouldOutput(LogLevel, LogLevel) at ImoyaAndroidLogLib.",
+                replaceWith = ReplaceWith(
+                    "LogLevel.shouldOutput(settings, request)", "net.imoya.android.log.LogLevel"
+                )
+            )
             @JvmStatic
             fun shouldOutput(settings: Level, request: Level): Boolean {
                 return settings.level <= request.level
