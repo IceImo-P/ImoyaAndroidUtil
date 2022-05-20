@@ -1,3 +1,7 @@
 <resources>
-    <string name="app_name">ImoyaAndroidUtil</string>
+    <string name="app_name" translatable="false">ImoyaAndroidUtil Sample App</string>
+
+    <string name="file_browser_external_app_not_found" translatable="false">File manager app is not installed.</string>
+    <string name="file_browser_failed_to_load_external_file" translatable="false">Failed to load file.\nThe app returned unexpected data.</string>
+    <string name="file_browser_item_icon_description" translatable="false">Icon</string>
 </resources>

@@ -1,83 +1,110 @@
 package net.imoya.android.util
 
+import net.imoya.android.log.LogUtil as NewLogUtil
+
 /**
  * ログユーティリティ
  */
 @Suppress("unused")
 object LogUtil {
-    @JvmStatic
-    fun logString(array: BooleanArray): String {
-        return array.joinToString(prefix = "[", postfix = "]") {
-            if (it) "1" else "0"
-        }
-    }
 
+    @Deprecated(
+        level = DeprecationLevel.WARNING,
+        message = "Use net.imoya.android.log.LogUtil.logString(BooleanArray) at ImoyaAndroidLogLib.",
+        replaceWith = ReplaceWith(
+            "LogUtil.logString(array)", "net.imoya.android.log.LogUtil"
+        )
+    )
     @JvmStatic
-    fun logString(array: IntArray): String {
-        return array.joinToString(prefix = "[", postfix = "]") {
-            it.toString()
-        }
-    }
+    fun logString(array: BooleanArray): String = NewLogUtil.logString(array)
 
+    @Deprecated(
+        level = DeprecationLevel.WARNING,
+        message = "Use net.imoya.android.log.LogUtil.logString(IntArray) at ImoyaAndroidLogLib.",
+        replaceWith = ReplaceWith(
+            "LogUtil.logString(array)", "net.imoya.android.log.LogUtil"
+        )
+    )
     @JvmStatic
-    fun logString(array: LongArray): String {
-        return array.joinToString(prefix = "[", postfix = "]") {
-            it.toString()
-        }
-    }
+    fun logString(array: IntArray): String = NewLogUtil.logString(array)
 
+    @Deprecated(
+        level = DeprecationLevel.WARNING,
+        message = "Use net.imoya.android.log.LogUtil.logString(LongArray) at ImoyaAndroidLogLib.",
+        replaceWith = ReplaceWith(
+            "LogUtil.logString(array)", "net.imoya.android.log.LogUtil"
+        )
+    )
     @JvmStatic
-    fun logString(array: ShortArray): String {
-        return array.joinToString(prefix = "[", postfix = "]") {
-            it.toString()
-        }
-    }
+    fun logString(array: LongArray): String = NewLogUtil.logString(array)
 
+    @Deprecated(
+        level = DeprecationLevel.WARNING,
+        message = "Use net.imoya.android.log.LogUtil.logString(ShortArray) at ImoyaAndroidLogLib.",
+        replaceWith = ReplaceWith(
+            "LogUtil.logString(array)", "net.imoya.android.log.LogUtil"
+        )
+    )
     @JvmStatic
-    fun logString(array: ByteArray): String {
-        return array.joinToString(prefix = "[", postfix = "]") {
-            it.toString()
-        }
-    }
+    fun logString(array: ShortArray): String = NewLogUtil.logString(array)
 
+    @Deprecated(
+        level = DeprecationLevel.WARNING,
+        message = "Use net.imoya.android.log.LogUtil.logString(ByteArray) at ImoyaAndroidLogLib.",
+        replaceWith = ReplaceWith(
+            "LogUtil.logString(array)", "net.imoya.android.log.LogUtil"
+        )
+    )
     @JvmStatic
-    fun logString(array: FloatArray): String {
-        return array.joinToString(prefix = "[", postfix = "]") {
-            it.toString()
-        }
-    }
+    fun logString(array: ByteArray): String = NewLogUtil.logString(array)
 
+    @Deprecated(
+        level = DeprecationLevel.WARNING,
+        message = "Use net.imoya.android.log.LogUtil.logString(FloatArray) at ImoyaAndroidLogLib.",
+        replaceWith = ReplaceWith(
+            "LogUtil.logString(array)", "net.imoya.android.log.LogUtil"
+        )
+    )
     @JvmStatic
-    fun logString(array: DoubleArray): String {
-        return array.joinToString(prefix = "[", postfix = "]") {
-            it.toString()
-        }
-    }
+    fun logString(array: FloatArray): String = NewLogUtil.logString(array)
 
+    @Deprecated(
+        level = DeprecationLevel.WARNING,
+        message = "Use net.imoya.android.log.LogUtil.logString(DoubleArray) at ImoyaAndroidLogLib.",
+        replaceWith = ReplaceWith(
+            "LogUtil.logString(array)", "net.imoya.android.log.LogUtil"
+        )
+    )
     @JvmStatic
-    fun logString(array: CharArray): String {
-        return array.joinToString(prefix = "[", postfix = "]") {
-            it.toString()
-        }
-    }
+    fun logString(array: DoubleArray): String = NewLogUtil.logString(array)
 
+    @Deprecated(
+        level = DeprecationLevel.WARNING,
+        message = "Use net.imoya.android.log.LogUtil.logString(CharArray) at ImoyaAndroidLogLib.",
+        replaceWith = ReplaceWith(
+            "LogUtil.logString(array)", "net.imoya.android.log.LogUtil"
+        )
+    )
     @JvmStatic
-    fun logString(obj: Any?): String {
-        return when (obj) {
-            null -> "null"
-            is IntArray -> logString(obj)
-            is LongArray -> logString(obj)
-            is ShortArray -> logString(obj)
-            is ByteArray -> logString(obj)
-            is FloatArray -> logString(obj)
-            is DoubleArray -> logString(obj)
-            is CharArray -> logString(obj)
-            is BooleanArray -> logString(obj)
-            is Array<*> -> logString(obj)
-            else -> obj.toString()
-        }
-    }
+    fun logString(array: CharArray): String = NewLogUtil.logString(array)
 
+    @Deprecated(
+        level = DeprecationLevel.WARNING,
+        message = "Use net.imoya.android.log.LogUtil.logString(Any?) at ImoyaAndroidLogLib.",
+        replaceWith = ReplaceWith(
+            "LogUtil.logString(obj)", "net.imoya.android.log.LogUtil"
+        )
+    )
     @JvmStatic
-    fun logString(array: Array<*>): String = array.contentDeepToString()
+    fun logString(obj: Any?): String = NewLogUtil.logString(obj)
+
+    @Deprecated(
+        level = DeprecationLevel.WARNING,
+        message = "Use net.imoya.android.log.LogUtil.logString(Array<*>) at ImoyaAndroidLogLib.",
+        replaceWith = ReplaceWith(
+            "LogUtil.logString(obj)", "net.imoya.android.log.LogUtil"
+        )
+    )
+    @JvmStatic
+    fun logString(array: Array<*>): String = NewLogUtil.logString(array)
 }
