@@ -1,3 +1,19 @@
+/*
+ * Copyright (C) 2022 IceImo-P
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package net.imoya.android.util
 
 import android.app.Service
@@ -41,18 +57,18 @@ abstract class IntentThreadService : Service() {
         wl.acquire(serviceTimeout)
         try {
 
-            Log.v(TAG, "onStart")
+            UtilLog.v(TAG, "onStart")
 
             // タスク処理用スレッド未起動時は、新しいスレッドを開始する
             if (currentThread == null || currentThread!!.isOnExit) {
-                // Log.v(TAG, "onStart: Starting ServiceThread.");
+                UtilLog.v(TAG, "onStart: Starting ServiceThread.")
                 currentThread = createServiceThread()
                 currentThread?.start()
             }
 
             // タスク処理用スレッドにタスクを処理してもらう
             currentThread?.addAction(intent, startId)
-            // Log.v(TAG, "onStart: Set up task to ServiceThread.");
+            UtilLog.v(TAG, "onStart: Set up task to ServiceThread.")
         } finally {
             // PARTIAL_WAKE_LOCKを解放する
             wl.release()
@@ -65,7 +81,7 @@ abstract class IntentThreadService : Service() {
             this, this.javaClass.name + "#onDestroy"
         )
         wl.acquire(60 * 1000L /*1 minute*/)
-        Log.v(TAG, "onDestroy")
+        UtilLog.v(TAG, "onDestroy")
         try {
             super.onDestroy()
 
@@ -73,7 +89,7 @@ abstract class IntentThreadService : Service() {
             try {
                 currentThread?.quitSafely()
             } catch (ex: Exception) {
-                Log.d(TAG, ex)
+                UtilLog.d(TAG, ex)
             }
         } finally {
             // PARTIAL_WAKE_LOCKを解放する

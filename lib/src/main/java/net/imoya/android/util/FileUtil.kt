@@ -1,3 +1,19 @@
+/*
+ * Copyright (C) 2022 IceImo-P
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package net.imoya.android.util
 
 import android.content.Context
@@ -49,7 +65,7 @@ object FileUtil {
         val prefName = defaultSharedPreferencesName(context)
         val parentPath: String = context.filesDir.parent ?: context.filesDir.absolutePath
         val prefPath = "$parentPath/shared_prefs/$prefName.xml"
-        Log.i(TAG, "prefPath = $prefPath")
+        UtilLog.i(TAG) { "prefPath = $prefPath" }
         return File(prefPath).exists()
     }
 
@@ -73,7 +89,7 @@ object FileUtil {
                 return false
             }
         } catch (e: IOException) {
-            Log.w(TAG, e)
+            UtilLog.w(TAG, e)
             return false
         }
         return true
@@ -110,7 +126,7 @@ object FileUtil {
             try {
                 reader.close()
             } catch (e: IOException) {
-                Log.d(TAG, "readFile: IOException at closing stream", e)
+                UtilLog.d(TAG, "readFile: IOException at closing stream", e)
             }
         }
     }
@@ -139,7 +155,7 @@ object FileUtil {
             try {
                 writer.close()
             } catch (e: IOException) {
-                Log.d(TAG, "writeFile: IOException at closing stream", e)
+                UtilLog.d(TAG, "writeFile: IOException at closing stream", e)
             }
         }
     }
@@ -167,7 +183,7 @@ object FileUtil {
             try {
                 writer.close()
             } catch (e: IOException) {
-                Log.d(TAG, "writeFile: IOException at closing stream", e)
+                UtilLog.d(TAG, "writeFile: IOException at closing stream", e)
             }
         }
     }
