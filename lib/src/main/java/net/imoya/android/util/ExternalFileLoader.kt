@@ -1,3 +1,19 @@
+/*
+ * Copyright (C) 2022 IceImo-P
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package net.imoya.android.util
 
 import android.content.Context
@@ -112,22 +128,22 @@ class ExternalFileLoader(context: Context) :
     override fun doInBackground(vararg params: Param?): Result? {
         val param = if (params.isNotEmpty()) params[0] else null
         if (param == null) {
-            Log.v(TAG, "ERROR: param == null")
+            UtilLog.v(TAG, "ERROR: param == null")
             return Result(null, false)
         } else {
             if (abortRequested) {
-                Log.v(TAG, "Abort")
+                UtilLog.v(TAG, "Abort")
                 return Result(param, false)
             }
             return try {
                 sourceFileName = getSourceTitle(param.sourceUri)
                 if (abortRequested) {
-                    Log.v(TAG, "Abort")
+                    UtilLog.v(TAG, "Abort")
                     Result(param, false)
                 }
                 copyFile(param)
             } catch (e: Exception) {
-                Log.d(TAG, "doInBackground: Error", e)
+                UtilLog.d(TAG, "doInBackground: Error", e)
                 Result(param, false)
             }
         }
@@ -165,7 +181,7 @@ class ExternalFileLoader(context: Context) :
             }
         }
         if (abortRequested) {
-            Log.v(TAG, "Abort")
+            UtilLog.v(TAG, "Abort")
             return Result(param, false)
         }
         return Result(param, true)
@@ -179,7 +195,7 @@ class ExternalFileLoader(context: Context) :
                 break
             }
             if (abortRequested) {
-                Log.v(TAG, "Abort")
+                UtilLog.v(TAG, "Abort")
                 break
             }
             dest.write(buffer, 0, read)
@@ -196,7 +212,7 @@ class ExternalFileLoader(context: Context) :
             val bareStream = context.get()?.contentResolver?.openInputStream(param.sourceUri)
             if (bareStream != null) BufferedInputStream(bareStream) else null
         } catch (e: FileNotFoundException) {
-            Log.d(TAG, "Failed to open source content", e)
+            UtilLog.d(TAG, "Failed to open source content", e)
             null
         }
     }
@@ -211,7 +227,7 @@ class ExternalFileLoader(context: Context) :
             val file = getFile(param)
             if (file != null) FileOutputStream(file) else null
         } catch (e: java.lang.Exception) {
-            Log.d(TAG, "Failed to open destination file", e)
+            UtilLog.d(TAG, "Failed to open destination file", e)
             null
         }
     }
@@ -240,7 +256,7 @@ class ExternalFileLoader(context: Context) :
                 }
             }
         } catch (e: Exception) {
-            Log.d(TAG, "onPostExecute: Error at Listener", e)
+            UtilLog.d(TAG, "onPostExecute: Error at Listener", e)
         }
     }
 

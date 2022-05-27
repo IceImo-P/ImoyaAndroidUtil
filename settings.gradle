@@ -10,3 +10,4 @@
 rootProject.name = "ImoyaAndroidUtil"
 include ':app'
 include ':lib'
+include ':imoya-android-log'

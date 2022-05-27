@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources xmlns:tools="http://schemas.android.com/tools">
-    <string name="imoya_log_level" translatable="false" tools:override="true">i</string>
+    <string name="imoya_android_util_log_level" translatable="false" tools:override="true">none</string>
 
     <string name="file_browser_item_icon_description" translatable="false">Icon</string>
 
