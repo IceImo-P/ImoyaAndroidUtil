@@ -36,7 +36,7 @@ dependencies {
     implementation 'androidx.appcompat:appcompat:1.3.1'
     implementation 'com.google.android.material:material:1.4.0'
     implementation project(":lib")
-    implementation project(':imoya-android-log')
+    implementation 'net.imoya.android.log:imoya-android-log:1.1.0'
     implementation 'net.imoya.android.dialog:imoya-android-dialog:1.1.2'
     testImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'androidx.test.ext:junit:1.1.3'
