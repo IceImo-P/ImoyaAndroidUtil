@@ -71,8 +71,8 @@
     ```groovy
     dependencies {
         // (other dependencies)
-        implementation 'net.imoya.android.util:imoya-android-util:[version]'
-        implementation 'net.imoya.android.log:imoya-android-log:[version]'
+        implementation 'net.imoya.android.util:imoya-android-util:1.6.0'
+        implementation 'net.imoya.android.log:imoya-android-log:1.1.0'
         // (other dependencies)
     }
     ```
@@ -81,7 +81,7 @@
 
 ### For non-GitHub users, Android application with Android Studio (using aar)
 
-1. Install [ImoyaAndroidLog](https://github.com/IceImo-P/ImoyaAndroidLog) with [this section](https://github.com/IceImo-P/ImoyaAndroidLog#for-non-github-users-android-application-with-android-studio-using-aar).
+1. Install [ImoyaAndroidLog](https://github.com/IceImo-P/ImoyaAndroidLog) with reading [this section](https://github.com/IceImo-P/ImoyaAndroidLog#for-non-github-users-android-application-with-android-studio-using-aar).
 2. Download `imoya-android-util-release-[version].aar` from [Releases](https://github.com/IceImo-P/ImoyaAndroidUtil/releases) page.
 3. Place `imoya-android-util-release-[version].aar` in `libs` subdirectory of your app module.
 4. Add dependencies to your app module's `build.gradle`:
@@ -98,7 +98,7 @@
 
 ### For non-GitHub users, Android library with Android Studio (using aar)
 
-1. Install [ImoyaAndroidLog](https://github.com/IceImo-P/ImoyaAndroidLog) with [this section](https://github.com/IceImo-P/ImoyaAndroidLog#for-non-github-users-android-library-with-android-studio-using-aar).
+1. Install [ImoyaAndroidLog](https://github.com/IceImo-P/ImoyaAndroidLog) with reading [this section](https://github.com/IceImo-P/ImoyaAndroidLog#for-non-github-users-android-library-with-android-studio-using-aar).
 2. Download `imoya-android-util-release-[version].aar` from [Releases](https://github.com/IceImo-P/ImoyaAndroidUtil/releases) page.
 3. Create `imoya-android-util` subdirectory in your project's root directory.
 4. Place `imoya-android-util-release-[version].aar` in `imoya-android-util` directory.
