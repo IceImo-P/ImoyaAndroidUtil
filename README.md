@@ -71,8 +71,8 @@
     ```groovy
     dependencies {
         // (other dependencies)
-        implementation 'net.imoya.android.log:imoya-android-log:1.1.0'
-        implementation 'net.imoya.android.util:imoya-android-util:1.6.1'
+        implementation 'net.imoya.android.log:imoya-android-log:1.1.1'
+        implementation 'net.imoya.android.util:imoya-android-util:1.6.2'
         // (other dependencies)
     }
     ```
