@@ -18,6 +18,11 @@ package net.imoya.android.util
 
 import android.content.Context
 import android.graphics.drawable.Drawable
+import android.util.TypedValue
+import androidx.annotation.AttrRes
+import androidx.annotation.ColorInt
+import androidx.annotation.ColorRes
+import androidx.annotation.DrawableRes
 
 import androidx.core.content.res.ResourcesCompat
 
@@ -31,11 +36,34 @@ object ResourceUtil {
      *
      * @param context [Context]
      * @param resId Resource ID
-     * @return Color
+     * @return Color if resource exists, otherwise 0
      */
     @JvmStatic
-    fun loadColor(context: Context, resId: Int): Int {
+    @ColorInt
+    fun loadColor(context: Context, @ColorRes resId: Int): Int {
         return ResourcesCompat.getColor(context.resources, resId, null)
+    }
+
+    /**
+     * Get color from current theme
+     *
+     * @param context [Context]
+     * @param resId Resource ID
+     * @return Color if resource exists, otherwise 0
+     */
+    @JvmStatic
+    @ColorInt
+    fun loadColorFromTheme(context: Context, @AttrRes resId: Int): Int {
+        UtilLog.v(TAG, "loadColorFromTheme: start")
+        val typedValue = TypedValue()
+        return if (context.theme.resolveAttribute(resId, typedValue, true)) {
+            UtilLog.v(TAG, "loadColorFromTheme: exists")
+            typedValue.data
+        }
+        else{
+            UtilLog.v(TAG, "loadColorFromTheme: not found")
+            0
+        }
     }
 
     /**
@@ -46,7 +74,13 @@ object ResourceUtil {
      * @return [Drawable] if drawable resource exists, otherwise null.
      */
     @JvmStatic
-    fun loadDrawable(context: Context, resId: Int): Drawable? {
+    fun loadDrawable(context: Context, @DrawableRes resId: Int): Drawable? {
+        UtilLog.v(TAG, "loadDrawable: start")
         return ResourcesCompat.getDrawable(context.resources, resId, null)
     }
+
+    /**
+     * Tag for log
+     */
+    private const val TAG = "ResourceUtil"
 }
