@@ -18,10 +18,12 @@ package net.imoya.android.util
 
 import android.content.Context
 import android.net.Uri
-import android.os.AsyncTask
+import android.os.Handler
+import android.os.Looper
 import android.provider.OpenableColumns
 import java.io.*
 import java.lang.ref.WeakReference
+import java.util.concurrent.Executors
 
 /**
  * 外部ファイルローダ
@@ -32,18 +34,14 @@ import java.lang.ref.WeakReference
  * @author IceImo-P
  */
 @Suppress("unused")
-class ExternalFileLoader(context: Context) :
-    AsyncTask<ExternalFileLoader.Param, Int, ExternalFileLoader.Result>() {
+class ExternalFileLoader(context: Context) {
     /**
      * 入力パラメータモデル
      *
      * @param sourceUri   読み取り元 [Uri]
      * @param pathForSave 保存先ファイルのパス
      */
-    class Param(
-        val sourceUri: Uri,
-        val pathForSave: String
-    )
+    class Param(val sourceUri: Uri, val pathForSave: String)
 
     /**
      * 結果モデル
@@ -87,10 +85,39 @@ class ExternalFileLoader(context: Context) :
     var sourceFileName: String? = null
         private set
 
+    private inner class BackgroundProcess(val param: Param) : Runnable {
+        override fun run() {
+            val handler = Handler(Looper.getMainLooper())
+            if (abortRequested) {
+                UtilLog.v(TAG, "Abort")
+                handler.post {
+                    onPostExecute(Result(param, false))
+                }
+                return
+            }
+            try {
+                sourceFileName = getSourceTitle(param.sourceUri)
+                if (abortRequested) {
+                    UtilLog.v(TAG, "Abort")
+                    Result(param, false)
+                }
+                val result = copyFile(param)
+                handler.post {
+                    onPostExecute(result)
+                }
+            } catch (e: Exception) {
+                UtilLog.d(TAG, "doInBackground: Error", e)
+                handler.post {
+                    onPostExecute(Result(param, false))
+                }
+            }
+        }
+    }
+
     /**
-     * [Context]
+     * Reference of [Context]
      */
-    private val context: WeakReference<Context>
+    private val contextReference: WeakReference<Context>
 
     /**
      * 結果リスナ
@@ -103,7 +130,7 @@ class ExternalFileLoader(context: Context) :
     private var abortRequested = false
 
     init {
-        this.context = WeakReference(context)
+        this.contextReference = WeakReference(context)
     }
 
     /**
@@ -125,26 +152,13 @@ class ExternalFileLoader(context: Context) :
         abortRequested = true
     }
 
-    override fun doInBackground(vararg params: Param?): Result? {
-        val param = if (params.isNotEmpty()) params[0] else null
-        if (param == null) {
-            UtilLog.v(TAG, "ERROR: param == null")
-            return Result(null, false)
-        } else {
-            if (abortRequested) {
-                UtilLog.v(TAG, "Abort")
-                return Result(param, false)
-            }
-            return try {
-                sourceFileName = getSourceTitle(param.sourceUri)
-                if (abortRequested) {
-                    UtilLog.v(TAG, "Abort")
-                    Result(param, false)
-                }
-                copyFile(param)
-            } catch (e: Exception) {
-                UtilLog.d(TAG, "doInBackground: Error", e)
-                Result(param, false)
+    fun execute(param: Param) {
+        val executor = Executors.newSingleThreadExecutor()
+        try {
+            executor.submit(BackgroundProcess(param))
+        } catch (e: InterruptedException) {
+            Handler(Looper.getMainLooper()).post {
+                onPostExecute(Result(param, false))
             }
         }
     }
@@ -156,14 +170,13 @@ class ExternalFileLoader(context: Context) :
      * @return Title string or null
      */
     private fun getSourceTitle(uri: Uri): String? {
-        val cursor = context.get()?.contentResolver?.query(
+        val cursor = contextReference.get()?.contentResolver?.query(
             uri, null, null, null, null, null
         ) ?: return null
         return cursor.use { c ->
             if (c.moveToFirst()) {
-                c.getString(
-                    c.getColumnIndex(OpenableColumns.DISPLAY_NAME)
-                )
+                val columnIndex = c.getColumnIndex(OpenableColumns.DISPLAY_NAME)
+                if (columnIndex >= 0) { c.getString(columnIndex) } else null
             } else {
                 null
             }
@@ -209,7 +222,7 @@ class ExternalFileLoader(context: Context) :
      */
     private fun getInputStream(param: Param): InputStream? {
         return try {
-            val bareStream = context.get()?.contentResolver?.openInputStream(param.sourceUri)
+            val bareStream = contextReference.get()?.contentResolver?.openInputStream(param.sourceUri)
             if (bareStream != null) BufferedInputStream(bareStream) else null
         } catch (e: FileNotFoundException) {
             UtilLog.d(TAG, "Failed to open source content", e)
@@ -246,7 +259,7 @@ class ExternalFileLoader(context: Context) :
         return if (FileUtil.setupFile(file)) file else null
     }
 
-    override fun onPostExecute(result: Result) {
+    private fun onPostExecute(result: Result) {
         try {
             if (!abortRequested) {
                 if (result.success && result.param != null) {
