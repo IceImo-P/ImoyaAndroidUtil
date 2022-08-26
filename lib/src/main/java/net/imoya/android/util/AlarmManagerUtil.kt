@@ -69,6 +69,7 @@ object AlarmManagerUtil {
     }
 
 //    @TargetApi(Build.VERSION_CODES.KITKAT)
+    @SuppressLint("MissingPermission")
     @JvmStatic
     private fun setExactKitkat(
         am: AlarmManager, type: Int, triggerAtMillis: Long,
@@ -80,6 +81,7 @@ object AlarmManagerUtil {
     }
 
     @TargetApi(Build.VERSION_CODES.M)
+    @SuppressLint("MissingPermission")
     @JvmStatic
     private fun setExactMarshmallow(
         am: AlarmManager, type: Int, triggerAtMillis: Long,

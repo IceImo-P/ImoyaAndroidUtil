@@ -24,10 +24,7 @@ import androidx.activity.result.ActivityResult
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts.StartActivityForResult
 import androidx.appcompat.app.AppCompatActivity
-import net.imoya.android.dialog.DialogBuilder
-import net.imoya.android.dialog.DialogListener
-import net.imoya.android.dialog.DialogParentActivity
-import net.imoya.android.dialog.SingleButtonDialog
+import com.google.android.material.snackbar.Snackbar
 import net.imoya.android.log.Log
 import net.imoya.android.util.ExternalFileLoader
 import net.imoya.android.util.FileUtil
@@ -40,7 +37,7 @@ import java.io.File
  *
  * @author IceImo-P
  */
-class FileBrowserActivity : AppCompatActivity(), DialogListener {
+class FileBrowserActivity : AppCompatActivity() {
     /**
      * 定数定義:状態
      */
@@ -144,22 +141,6 @@ class FileBrowserActivity : AppCompatActivity(), DialogListener {
     }
 
     /**
-     * ダイアログ終了時に呼び出されます。
-     *
-     * @param requestCode [DialogBuilder] に設定したリクエストコード
-     * @param resultCode  結果コード
-     * @param data        追加のデータを含む [Intent]
-     */
-    override fun onDialogResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        if (requestCode == REQUEST_CODE_ERROR_FILE_MANAGER_APP_NOT_FOUND ||
-            requestCode == REQUEST_CODE_ERROR_FAILED_TO_LOAD_EXTERNAL_FILE
-        ) {
-            // 続行不可能なエラーの場合は、この画面を終了する
-            finish()
-        }
-    }
-
-    /**
      * Launch a file manager application that supports the Storage Access Framework.
      */
     private fun startFileManagerApp() {
@@ -179,12 +160,11 @@ class FileBrowserActivity : AppCompatActivity(), DialogListener {
 
             // Launch message dialog if file manager app is not installed
             state = State.DISPLAYING_ERROR_MESSAGE
-            SingleButtonDialog.Builder(
-                DialogParentActivity(this),
-                REQUEST_CODE_ERROR_FILE_MANAGER_APP_NOT_FOUND
-            )
-                .setMessage(this.getString(R.string.file_browser_external_app_not_found))
-                .show()
+            Snackbar.make(
+                findViewById(R.id.root),
+                R.string.file_browser_external_app_not_found,
+                Snackbar.LENGTH_LONG
+            ).show()
         }
     }
 
@@ -247,12 +227,11 @@ class FileBrowserActivity : AppCompatActivity(), DialogListener {
 
     private fun showExternalFileLoadingError() {
         state = State.DISPLAYING_ERROR_MESSAGE
-        SingleButtonDialog.Builder(
-            DialogParentActivity(this),
-            REQUEST_CODE_ERROR_FAILED_TO_LOAD_EXTERNAL_FILE
-        )
-            .setMessage(this.getString(R.string.file_browser_failed_to_load_external_file))
-            .show()
+        Snackbar.make(
+            findViewById(R.id.root),
+            R.string.file_browser_failed_to_load_external_file,
+            Snackbar.LENGTH_LONG
+        ).show()
     }
 
     companion object {
@@ -274,16 +253,6 @@ class FileBrowserActivity : AppCompatActivity(), DialogListener {
          * Extra key:(out)file name
          */
         const val EXTRA_KEY_FILE_NAME = "FileName"
-
-        /**
-         * Request code: dialog: Application for Storage access framework not found
-         */
-        private const val REQUEST_CODE_ERROR_FILE_MANAGER_APP_NOT_FOUND = 200
-
-        /**
-         * Request code: dialog: Failed to reading external file
-         */
-        private const val REQUEST_CODE_ERROR_FAILED_TO_LOAD_EXTERNAL_FILE = 201
 
         /**
          * 再起動時保存データ用キー:現在の状態

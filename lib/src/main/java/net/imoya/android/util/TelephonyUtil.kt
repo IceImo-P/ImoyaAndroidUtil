@@ -17,12 +17,13 @@
 package net.imoya.android.util
 
 import android.annotation.SuppressLint
-import android.annotation.TargetApi
 import android.content.Context
+import android.content.pm.PackageManager
 import android.os.Build
 import android.telecom.TelecomManager
 import android.telephony.TelephonyManager
 import androidx.annotation.RequiresApi
+import androidx.core.content.ContextCompat
 
 /**
  * [TelephonyManager] 関連ユーティリティ
@@ -39,8 +40,8 @@ object TelephonyUtil {
      */
     @JvmStatic
     fun isIdle(context: Context): Boolean {
-        return if (Build.VERSION.SDK_INT >= 30/* Build.VERSION_CODES.R */) {
-            isIdleR(context)
+        return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+            isIdleS(context)
         } else {
             isIdleLegacy(context)
         }
@@ -49,15 +50,21 @@ object TelephonyUtil {
     @SuppressLint("MissingPermission")
     @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
     @JvmStatic
-    fun isIdleR(context: Context): Boolean {
-        val manager = context.getSystemService(
-            Context.TELECOM_SERVICE
-        ) as TelecomManager
-        return !manager.isInCall
+    fun isIdleS(context: Context): Boolean {
+        if (ContextCompat.checkSelfPermission(
+                context,
+                android.Manifest.permission.READ_PHONE_STATE
+            ) == PackageManager.PERMISSION_GRANTED
+        ) {
+            val manager = context.getSystemService(Context.TELECOM_SERVICE) as TelecomManager
+            return !manager.isInCall
+        } else {
+            return true
+        }
     }
 
     @SuppressLint("deprecation")
-    @TargetApi(Build.VERSION_CODES.Q)
+    @Suppress("deprecation")
     @JvmStatic
     fun isIdleLegacy(context: Context): Boolean {
         val manager = context.getSystemService(
