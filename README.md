@@ -72,7 +72,7 @@
     dependencies {
         // (other dependencies)
         implementation 'net.imoya.android.log:imoya-android-log:1.2.0'
-        implementation 'net.imoya.android.util:imoya-android-util:1.8.0'
+        implementation 'net.imoya.android.util:imoya-android-util:1.9.0'
         // (other dependencies)
     }
     ```
