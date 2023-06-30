@@ -25,7 +25,7 @@ object BundleUtil {
     /**
      * Bundle.getParcelable for older Android versions
      */
-    @Suppress("DEPRECATION")
+    @Suppress("deprecation")
     @JvmStatic
     fun <T> getParcelableLegacy(bundle: Bundle, key: String): T? {
         return bundle.getParcelable(key)
