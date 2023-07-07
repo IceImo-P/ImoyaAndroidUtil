@@ -33,7 +33,6 @@ import java.util.concurrent.Executors
  *
  * @author IceImo-P
  */
-@Suppress("unused")
 class ExternalFileLoader(context: Context) {
     /**
      * 入力パラメータモデル
@@ -75,13 +74,12 @@ class ExternalFileLoader(context: Context) {
     /**
      * Buffer size (in bytes)
      */
-    @Suppress("weaker")
+    @Suppress("MemberVisibilityCanBePrivate")
     var bufferSize: Int = 32768
 
     /**
      * 読み取ったファイルのファイル名
      */
-    @Suppress("weaker")
     var sourceFileName: String? = null
         private set
 

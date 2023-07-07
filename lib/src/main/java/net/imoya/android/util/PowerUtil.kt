@@ -61,14 +61,14 @@ object PowerUtil {
     }
 
     @RequiresApi(Build.VERSION_CODES.KITKAT_WATCH)
-    fun isInteractiveKitkatWatch(context: Context): Boolean {
+    private fun isInteractiveKitkatWatch(context: Context): Boolean {
         val manager: PowerManager = context.getSystemService(POWER_SERVICE) as PowerManager
         return manager.isInteractive
     }
 
 //    @TargetApi(Build.VERSION_CODES.KITKAT)
     @Suppress("deprecation")
-    fun isInteractiveLegacy(context: Context): Boolean {
+    private fun isInteractiveLegacy(context: Context): Boolean {
         val manager: PowerManager = context.getSystemService(POWER_SERVICE) as PowerManager
         return manager.isScreenOn
     }

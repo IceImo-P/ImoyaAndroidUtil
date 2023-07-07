@@ -27,7 +27,6 @@ import androidx.annotation.RequiresApi
  *
  * @author IceImo-P
  */
-@Suppress("unused")
 class TimePickerHelper(private val timePicker: TimePicker) {
     /**
      * Call [TimePicker.getHour] or its legacy API

@@ -2,7 +2,7 @@ package net.imoya.android.util.sample
 
 import android.os.Parcel
 import android.os.Parcelable
-import net.imoya.android.util.ParcelUtil
+import androidx.core.os.ParcelCompat
 
 class SampleDataContainer(var name: String = "") : Parcelable {
 
@@ -32,7 +32,7 @@ class SampleDataContainer(var name: String = "") : Parcelable {
 
     constructor(parcel: Parcel) : this() {
         name = parcel.readString() ?: throw RuntimeException("name not found")
-        subContainer = ParcelUtil.readParcelable(
+        subContainer = ParcelCompat.readParcelable(
             parcel,
             SubContainer::class.java.classLoader!!,
             SubContainer::class.java
@@ -49,7 +49,7 @@ class SampleDataContainer(var name: String = "") : Parcelable {
     }
 
     override fun toString(): String {
-        return "$name / ${subContainer?.name}"
+        return "SampleDataContainer: $name / ${subContainer?.name}"
     }
 
     companion object CREATOR : Parcelable.Creator<SampleDataContainer> {

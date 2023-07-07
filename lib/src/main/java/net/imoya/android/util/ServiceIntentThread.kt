@@ -49,6 +49,7 @@ abstract class ServiceIntentThread(
         /**
          * [Service] が受信した [Intent]
          */
+        @Suppress("unused")
         @JvmField
         val intent: Intent?,
 
@@ -71,7 +72,6 @@ abstract class ServiceIntentThread(
     /**
      * [Task] の queue
      */
-    @Suppress("MemberVisibilityCanBePrivate")
     @JvmField
     protected val tasks: ConcurrentLinkedQueue<Task> = ConcurrentLinkedQueue()
 
@@ -182,7 +182,6 @@ abstract class ServiceIntentThread(
      * @param lastItem 最後に処理したタスクを含むQueueItem。
      * @return サービスの終了が確定した時はtrue, それ以外の時はfalse。
      */
-    @Suppress("MemberVisibilityCanBePrivate")
     protected open fun processOnIdle(lastItem: Task?): Boolean {
         while (tasks.isEmpty()) {
             // 過去に処理したタスクがあったら、一旦サービスの終了を指示する
@@ -217,7 +216,6 @@ abstract class ServiceIntentThread(
         return false
     }
 
-    @Suppress("MemberVisibilityCanBePrivate")
     protected open fun createTask(intent: Intent?, startId: Int): Task {
         // デフォルトの実装では、単純な Task オブジェクトを返す
         return Task(intent, startId)
