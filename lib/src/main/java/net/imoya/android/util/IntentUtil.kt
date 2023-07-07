@@ -1,27 +1,28 @@
 package net.imoya.android.util
 
-import android.annotation.TargetApi
 import android.content.Intent
 import android.os.Build
 import android.os.Parcelable
+import androidx.annotation.RequiresApi
+import androidx.core.content.IntentCompat
+import java.io.Serializable
 
 /**
  * [Intent] utilities
  *
  * @author IceImo-P
  */
-@Suppress("unused")
 object IntentUtil {
     /**
      * [Intent.getParcelableExtra] for any Android versions
      */
+    @Deprecated(
+        "Use IntentCompat.getParcelableExtra",
+        replaceWith = ReplaceWith("IntentCompat.getParcelableExtra(intent, key, clazz)")
+    )
     @JvmStatic
     fun <T : Parcelable> getParcelableExtra(intent: Intent, key: String, clazz: Class<T>): T? {
-        return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-            getParcelableExtraT(intent, key, clazz)
-        } else {
-            getParcelableExtraLegacy(intent, key)
-        }
+        return IntentCompat.getParcelableExtra(intent, key, clazz)
     }
 
     /**
@@ -43,25 +44,32 @@ object IntentUtil {
     /**
      * [Intent.getParcelableArrayListExtra] for any Android versions
      */
+    @Deprecated(
+        "Use IntentCompat.getParcelableArrayListExtra",
+        replaceWith = ReplaceWith("IntentCompat.getParcelableArrayListExtra(intent, key, clazz)")
+    )
     fun <T : Parcelable> getParcelableArrayListExtra(
         intent: Intent,
         key: String,
         clazz: Class<T>
     ): ArrayList<out T>? {
-        return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-            getParcelableArrayListExtraT(intent, key, clazz)
-        } else {
-            getParcelableArrayListExtraLegacy(intent, key)
-        }
+        return IntentCompat.getParcelableArrayListExtra(intent, key, clazz)
     }
 
     /**
-     * [Intent.getParcelableExtra] for older Android versions
+     * [Intent.getSerializableExtra] for any Android versions
      */
-    @Suppress("deprecation")
     @JvmStatic
-    fun <T : Parcelable> getParcelableExtraLegacy(intent: Intent, key: String): T? {
-        return intent.getParcelableExtra(key)
+    inline fun <reified T : Serializable> getSerializableExtra(
+        intent: Intent,
+        key: String,
+        clazz: Class<T>
+    ): T? {
+        return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            getSerializableExtraT(intent, key, clazz)
+        } else {
+            getSerializableExtraLegacy(intent, key) as T
+        }
     }
 
     /**
@@ -79,31 +87,19 @@ object IntentUtil {
     }
 
     /**
-     * [Intent.getParcelableArrayListExtra] for older Android versions
+     * [Intent.getSerializableExtra] for older Android versions
      */
     @Suppress("deprecation")
     @JvmStatic
-    fun <T : Parcelable> getParcelableArrayListExtraLegacy(
-        intent: Intent,
-        key: String
-    ): ArrayList<out T>? {
-        return intent.getParcelableArrayListExtra(key)
-    }
-
-    /**
-     * [Intent.getParcelableExtra] for TIRAMISU or newer Android versions
-     */
-    @JvmStatic
-    @TargetApi(Build.VERSION_CODES.TIRAMISU)
-    fun <T> getParcelableExtraT(intent: Intent, key: String, clazz: Class<T>): T? {
-        return intent.getParcelableExtra(key, clazz)
+    fun getSerializableExtraLegacy(intent: Intent, key: String): Serializable? {
+        return intent.getSerializableExtra(key)
     }
 
     /**
      * [Intent.getParcelableArrayExtra] for TIRAMISU or newer Android versions
      */
     @JvmStatic
-    @TargetApi(Build.VERSION_CODES.TIRAMISU)
+    @RequiresApi(Build.VERSION_CODES.TIRAMISU)
     fun <T : Parcelable> getParcelableArrayExtraT(
         intent: Intent,
         key: String,
@@ -113,15 +109,11 @@ object IntentUtil {
     }
 
     /**
-     * [Intent.getParcelableArrayListExtra] for TIRAMISU or newer Android versions
+     * [Intent.getSerializableExtra] for TIRAMISU or newer Android versions
      */
     @JvmStatic
-    @TargetApi(Build.VERSION_CODES.TIRAMISU)
-    fun <T : Parcelable> getParcelableArrayListExtraT(
-        intent: Intent,
-        key: String,
-        clazz: Class<T>
-    ): ArrayList<out T>? {
-        return intent.getParcelableArrayListExtra(key, clazz)
+    @RequiresApi(Build.VERSION_CODES.TIRAMISU)
+    fun <T : Serializable> getSerializableExtraT(intent: Intent, key: String, clazz: Class<T>): T? {
+        return intent.getSerializableExtra(key, clazz)
     }
 }

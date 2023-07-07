@@ -22,7 +22,6 @@ object DrawableUtil {
      * @return [Drawable]
      */
     @JvmStatic
-    @Suppress("MemberCanBePrivate")
     fun setTintColor(drawable: Drawable, @ColorInt color: Int): Drawable {
         UtilLog.v(TAG, "setTintColor: start")
         val wrapped = DrawableCompat.wrap(drawable).mutate()

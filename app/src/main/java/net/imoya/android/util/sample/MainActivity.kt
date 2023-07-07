@@ -19,7 +19,9 @@ class MainActivity : AppCompatActivity() {
     private fun intentTest() {
         val intent = Intent(this.applicationContext, IntentTestActivity::class.java)
         intent.putExtra(IntentTestActivity.KEY_SINGLE, SampleDataContainer("1"))
-        intent.putExtra(IntentTestActivity.KEY_ARRAY, Array(2) { SampleDataContainer(it.toString()) })
+        intent.putExtra(
+            IntentTestActivity.KEY_ARRAY,
+            Array(2) { SampleDataContainer(it.toString()) })
         val list = ArrayList<SampleDataContainer>()
         list.add(SampleDataContainer("1"))
         list.add(SampleDataContainer("2"))
@@ -27,6 +29,7 @@ class MainActivity : AppCompatActivity() {
         list[0].subContainer = SampleDataContainer.SubContainer("1-1")
         list[2].subContainer = SampleDataContainer.SubContainer("3-1")
         intent.putExtra(IntentTestActivity.KEY_LIST, list)
+        intent.putExtra(IntentTestActivity.KEY_SERIALIZABLE, SampleDataSerializable("serializable"))
         startActivity(intent)
     }
 }

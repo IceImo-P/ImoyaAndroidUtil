@@ -24,9 +24,9 @@ import androidx.activity.result.ActivityResult
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts.StartActivityForResult
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.os.BundleCompat
 import com.google.android.material.snackbar.Snackbar
 import net.imoya.android.log.Log
-import net.imoya.android.util.BundleUtil
 import net.imoya.android.util.ExternalFileLoader
 import net.imoya.android.util.FileUtil
 import java.io.File
@@ -103,8 +103,8 @@ class FileBrowserActivity : AppCompatActivity() {
         if (savedInstanceState == null) {
             state = State.START
         } else {
-            externalUri = BundleUtil.getParcelable(savedInstanceState, STATE_EXTERNAL_URI, Uri::class.java)
-            state = BundleUtil.getParcelable(savedInstanceState, STATE, State::class.java) as State
+            externalUri = BundleCompat.getParcelable(savedInstanceState, STATE_EXTERNAL_URI, Uri::class.java)
+            state = BundleCompat.getParcelable(savedInstanceState, STATE, State::class.java) as State
             if (state == State.LOADING_EXTERNAL_FILE) {
                 // 外部ファイル取得中に再起動した場合は、再取得を試みる
                 state = State.START_LOADING_EXTERNAL_FILE

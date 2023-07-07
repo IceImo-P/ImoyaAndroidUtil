@@ -34,7 +34,7 @@ object ClipboardUtil {
      * @param label Label for text
      * @param text Text to copy
      */
-    @Suppress("weaker")
+    @Suppress("MemberVisibilityCanBePrivate")
     fun copyText(context: Context, label: CharSequence, text: CharSequence) {
         val manager = context.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
         manager.setPrimaryClip(ClipData.newPlainText(label, text))

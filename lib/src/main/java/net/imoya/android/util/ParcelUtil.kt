@@ -2,7 +2,9 @@ package net.imoya.android.util
 
 import android.os.Build
 import android.os.Parcel
+import android.os.Parcelable
 import androidx.annotation.RequiresApi
+import androidx.core.os.ParcelCompat
 
 /**
  * [Parcel] utilities
@@ -14,29 +16,55 @@ object ParcelUtil {
     /**
      * [Parcel.readParcelable] for any Android versions
      */
+    @Deprecated(
+        "Use ParcelCompat.readParcelable",
+        replaceWith = ReplaceWith("ParcelCompat.readParcelable(parcel, loader, clazz)")
+    )
     @JvmStatic
-    fun <T> readParcelable(parcel: Parcel, loader: ClassLoader, clazz: Class<T>): T? {
+    fun <T : Parcelable> readParcelable(parcel: Parcel, loader: ClassLoader, clazz: Class<T>): T? {
+        return ParcelCompat.readParcelable(parcel, loader, clazz)
+    }
+
+    /**
+     * [Parcel.readParcelableArray] for any Android versions
+     */
+    @JvmStatic
+    inline fun <reified T : Parcelable> readParcelableArray(
+        parcel: Parcel,
+        loader: ClassLoader,
+        clazz: Class<T>
+    ): Array<out T>? {
         return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-            readParcelableT(parcel, loader, clazz)
+            readParcelableArrayT(parcel, loader, clazz)
         } else {
-            readParcelableLegacy(parcel, loader)
+            readParcelableArrayLegacy(parcel, loader)
         }
     }
 
     /**
-     * [Parcel.readParcelable] for older Android versions
+     * [Parcel.readParcelableArray] for older Android versions
      */
     @Suppress("deprecation")
-    @JvmStatic
-    fun <T> readParcelableLegacy(parcel: Parcel, loader: ClassLoader): T? {
-        return parcel.readParcelable(loader)
+    inline fun <reified T : Parcelable> readParcelableArrayLegacy(
+        parcel: Parcel,
+        loader: ClassLoader
+    ): Array<out T>? {
+        val extra: Array<Parcelable> = parcel.readParcelableArray(loader) ?: return null
+        val result = arrayListOf<T>()
+        extra.forEach { result.add(it as T) }
+        return result.toTypedArray()
     }
 
     /**
-     * [Parcel.readParcelable] for TIRAMISU or newer Android versions
+     * [Parcel.readParcelableArray] for TIRAMISU or newer Android versions
      */
-    @RequiresApi(Build.VERSION_CODES.TIRAMISU)
     @JvmStatic
-    fun <T> readParcelableT(parcel: Parcel, loader: ClassLoader, clazz: Class<T>): T? {
-        return parcel.readParcelable(loader, clazz)
-    }}
+    @RequiresApi(Build.VERSION_CODES.TIRAMISU)
+    fun <T : Parcelable> readParcelableArrayT(
+        parcel: Parcel,
+        loader: ClassLoader,
+        clazz: Class<T>
+    ): Array<out T>? {
+        return parcel.readParcelableArray(loader, clazz)
+    }
+}
