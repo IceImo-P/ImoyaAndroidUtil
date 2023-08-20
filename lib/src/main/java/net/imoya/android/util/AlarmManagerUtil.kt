@@ -21,7 +21,10 @@ import android.annotation.TargetApi
 import android.app.AlarmManager
 import android.app.AlarmManager.AlarmClockInfo
 import android.app.PendingIntent
+import android.content.Context
+import android.content.Intent
 import android.os.Build
+import android.provider.Settings
 
 /**
  * Utility methods for operate [AlarmManager]
@@ -30,6 +33,33 @@ import android.os.Build
  */
 @Suppress("unused")
 object AlarmManagerUtil {
+    /**
+     * Returns [AlarmManager.canScheduleExactAlarms] if supported.
+     *
+     * @param alarmManager [AlarmManager]
+     * @return [AlarmManager.canScheduleExactAlarms] value if supported OS version, otherwise true.
+     */
+    @JvmStatic
+    fun canScheduleExactAlarms(alarmManager: AlarmManager): Boolean {
+        return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+            alarmManager.canScheduleExactAlarms()
+        } else {
+            true
+        }
+    }
+
+    /**
+     * Start Android system settings activity for setting exact alarm permission.
+     *
+     * @param context [Context]
+     */
+    @JvmStatic
+    fun startExactAlarmsSettingsActivity(context: Context) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+            context.startActivity(Intent(Settings.ACTION_REQUEST_SCHEDULE_EXACT_ALARM))
+        }
+    }
+
     /**
      * 次回の起動を予約します。
      * Android6.0以上でデバイスがスリープ中の場合、正確な時刻に起動しない場合があります。
