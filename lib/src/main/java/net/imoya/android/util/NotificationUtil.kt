@@ -16,13 +16,17 @@
 
 package net.imoya.android.util
 
+import android.Manifest
 import android.app.Notification
 import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.app.PendingIntent
 import android.content.Context
 import android.content.Context.NOTIFICATION_SERVICE
+import android.content.Intent
+import android.content.pm.PackageManager
 import android.os.Build
+import android.provider.Settings
 import androidx.annotation.RequiresApi
 import androidx.core.app.NotificationCompat
 
@@ -33,6 +37,32 @@ import androidx.core.app.NotificationCompat
  */
 @Suppress("unused")
 object NotificationUtil {
+    /**
+     * Returns true if Android Notification permission is granted.
+     *
+     * @param context [Context]
+     * @return true if Android Notification permission is granted, otherwise false.
+     */
+    @JvmStatic
+    fun canUseNotification(context: Context): Boolean {
+        return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            context.checkSelfPermission(Manifest.permission.POST_NOTIFICATIONS) == PackageManager.PERMISSION_GRANTED
+        } else {
+            true
+        }
+    }
+
+    /**
+     * Start Android system settings activity for app notification.
+     *
+     * @param context [Context]
+     */
+    fun startNotificationSettingsActivity(context: Context) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            context.startActivity(Intent(Settings.ACTION_APP_NOTIFICATION_SETTINGS))
+        }
+    }
+
     /**
      * 通知チャンネルを作成します。
      *
