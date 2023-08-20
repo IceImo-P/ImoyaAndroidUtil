@@ -16,6 +16,7 @@
 
 package net.imoya.android.util
 
+import android.app.ActivityManager
 import android.content.Context
 import android.content.Context.POWER_SERVICE
 import android.os.Build
@@ -71,5 +72,21 @@ object PowerUtil {
     private fun isInteractiveLegacy(context: Context): Boolean {
         val manager: PowerManager = context.getSystemService(POWER_SERVICE) as PowerManager
         return manager.isScreenOn
+    }
+
+    /**
+     * バックグラウンド動作が制限されているか否かを返します。
+     *
+     * @param context [Context]
+     * @return バックグラウンド動作が制限されている場合 true, その他の場合 false
+     */
+    @JvmStatic
+    fun isBackgroundRestricted(context: Context): Boolean {
+        return if (Build.VERSION.SDK_INT < Build.VERSION_CODES.P) {
+            true
+        } else {
+            val activityManager = context.getSystemService(Context.ACTIVITY_SERVICE) as ActivityManager
+            activityManager.isBackgroundRestricted
+        }
     }
 }
