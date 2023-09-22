@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2022 IceImo-P
+ * Copyright (C) 2022-2023 IceImo-P
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -119,7 +119,7 @@ object FileUtil {
                 if (read == -1) {
                     break
                 }
-                s.append(buffer, 0, read)
+                s.appendRange(buffer, 0, read)
             }
             s.toString()
         } finally {

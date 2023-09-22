@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2022 IceImo-P
+ * Copyright (C) 2022-2023 IceImo-P
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -51,15 +51,15 @@ object TelephonyUtil {
     @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
     @JvmStatic
     fun isIdleS(context: Context): Boolean {
-        if (ContextCompat.checkSelfPermission(
+        return if (ContextCompat.checkSelfPermission(
                 context,
                 android.Manifest.permission.READ_PHONE_STATE
             ) == PackageManager.PERMISSION_GRANTED
         ) {
-            val manager = context.getSystemService(Context.TELECOM_SERVICE) as TelecomManager
-            return !manager.isInCall
+            val manager = context.getSystemService(Context.TELECOM_SERVICE) as TelecomManager;
+            !manager.isInCall
         } else {
-            return true
+            true
         }
     }
 
