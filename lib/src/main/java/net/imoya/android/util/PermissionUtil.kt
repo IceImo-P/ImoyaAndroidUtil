@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2022 IceImo-P
+ * Copyright (C) 2022-2023 IceImo-P
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -21,6 +21,7 @@ import android.content.Context
 import android.content.pm.PackageManager
 import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.app.ActivityCompat
 
 /**
  * Permission utilities
@@ -81,6 +82,12 @@ internal object PermissionUtil {
         }
     }
 
+    /**
+     * 指定の権限取得結果が、すべて許可されているか否かを返します。
+     *
+     * @param grantResults 権限取得結果
+     * @return すべて許可されている場合は true, その他の場合は false
+     */
     @JvmStatic
     fun isGrantedAll(grantResults: IntArray): Boolean {
         for (result in grantResults) {
@@ -91,19 +98,25 @@ internal object PermissionUtil {
         return true
     }
 
+    /**
+     * 指定の権限はユーザーの手動設定が必要か否かを返します。
+     *
+     * @param activity [AppCompatActivity]
+     * @param permission 権限([Manifest.permission] にて定義される文字列)
+     * @return ユーザーの手動設定が必要な場合 true, その他の場合は false
+     */
     @JvmStatic
+    @Deprecated(
+        "Use ActivityCompat.shouldShowRequestPermissionRationale",
+        replaceWith = ReplaceWith(
+            "ActivityCompat.shouldShowRequestPermissionRationale(activity, permission)"
+        )
+    )
     fun shouldShowRequestPermissionRationale(
-        activity: AppCompatActivity
+        activity: AppCompatActivity,
+        permission: String
     ): Boolean {
-        return if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
-            // Android 6.0未満の場合は、インストール時点で権限取得済みである
-            UtilLog.v(TAG, "Android Version < 6.0")
-            false
-        } else {
-            // Android 6.0以上の場合は、Activityの機能を呼び出す
-            activity.shouldShowRequestPermissionRationale(
-                Manifest.permission.READ_EXTERNAL_STORAGE
-            )
-        }
+
+        return ActivityCompat.shouldShowRequestPermissionRationale(activity, permission)
     }
 }

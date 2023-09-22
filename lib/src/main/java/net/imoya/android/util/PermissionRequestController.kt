@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2022 IceImo-P
+ * Copyright (C) 2022-2023 IceImo-P
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,6 +17,7 @@
 package net.imoya.android.util
 
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.app.ActivityCompat
 
 /**
  * 実行時権限取得コントローラ
@@ -46,9 +47,7 @@ abstract class PermissionRequestController(
     }
 
     fun onRequestPermissionsResult(
-        requestCode: Int,
-        @Suppress("UNUSED_PARAMETER") permissions: Array<String>,
-        grantResults: IntArray
+        requestCode: Int, permissions: Array<String>, grantResults: IntArray
     ): Boolean {
         // 権限取得処理の結果か?
         if (requestCode != this.requestCode) {
@@ -62,7 +61,13 @@ abstract class PermissionRequestController(
             onGrantedAll()
         } else {
             // 拒否された場合は、拒否時の処理を行う
-            onDenied(!PermissionUtil.shouldShowRequestPermissionRationale(activity))
+            val permanently = ArrayList<Boolean>(permissions.size)
+            for (permission in permissions) {
+                permanently.add(
+                    !ActivityCompat.shouldShowRequestPermissionRationale(activity, permission)
+                )
+            }
+            onDenied(permanently.toBooleanArray())
         }
 
         // 権限取得処理中ではなくなった
@@ -79,7 +84,7 @@ abstract class PermissionRequestController(
      * 権限取得拒否時の処理を実装してください。
      *
      * @param permanently 永続的に拒否(次回から表示しないにチェックし拒否)された場合は true,
-     *                    その他の場合は false
+     *                    その他の場合は false が設定される、 permissions に対応する配列
      */
-    protected abstract fun onDenied(permanently: Boolean)
+    protected abstract fun onDenied(permanently: BooleanArray)
 }
