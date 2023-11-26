@@ -83,7 +83,8 @@ object PowerUtil {
     @JvmStatic
     fun isBackgroundRestricted(context: Context): Boolean {
         return if (Build.VERSION.SDK_INT < Build.VERSION_CODES.P) {
-            true
+            // No restriction at prior to Android 9
+            false
         } else {
             val activityManager = context.getSystemService(Context.ACTIVITY_SERVICE) as ActivityManager
             activityManager.isBackgroundRestricted
